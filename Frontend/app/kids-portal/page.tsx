@@ -13,9 +13,12 @@ import {
 
 import toast from 'react-hot-toast'
 import Link from 'next/link'
+import NaughtyNiceScanner from '../../components/NaughtyNiceScanner'
+import ElfNameGenerator from '../../components/ElfNameGenerator'
+import LetterToSanta from '../../components/LetterToSanta'
 
 export default function KidsPortal() {
-  const [activeTab, setActiveTab] = useState<'messages' | 'wishlist' | 'gifts'>('messages')
+  const [activeTab, setActiveTab] = useState<'messages' | 'wishlist' | 'gifts' | 'funzone'>('funzone')
   const [messages, setMessages] = useState<any[]>([])
   const [newMessage, setNewMessage] = useState('')
   const [wishlist, setWishlist] = useState(['', '', ''])
@@ -274,33 +277,39 @@ export default function KidsPortal() {
           <div className="flex space-x-2">
             <button
               onClick={() => setActiveTab('messages')}
-              className={`flex-1 py-2 px-3 rounded-lg font-medium transition-colors text-sm ${
-                activeTab === 'messages'
-                  ? 'bg-christmas-red text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
+              className={`flex-1 py-2 px-3 rounded-lg font-medium transition-colors text-sm ${activeTab === 'messages'
+                ? 'bg-christmas-red text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
             >
               📬 Messages with Santa
             </button>
             <button
               onClick={() => setActiveTab('wishlist')}
-              className={`flex-1 py-2 px-3 rounded-lg font-medium transition-colors text-sm ${
-                activeTab === 'wishlist'
-                  ? 'bg-christmas-red text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
+              className={`flex-1 py-2 px-3 rounded-lg font-medium transition-colors text-sm ${activeTab === 'wishlist'
+                ? 'bg-christmas-red text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
             >
               🎁 My Wishlist
             </button>
             <button
               onClick={() => setActiveTab('gifts')}
-              className={`flex-1 py-2 px-3 rounded-lg font-medium transition-colors text-sm ${
-                activeTab === 'gifts'
-                  ? 'bg-christmas-red text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
+              className={`flex-1 py-2 px-3 rounded-lg font-medium transition-colors text-sm ${activeTab === 'gifts'
+                ? 'bg-christmas-red text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
             >
               🎁 Gifts from Santa
+            </button>
+            <button
+              onClick={() => setActiveTab('funzone')}
+              className={`flex-1 py-2 px-3 rounded-lg font-medium transition-colors text-sm ${activeTab === 'funzone'
+                ? 'bg-christmas-red text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+            >
+              🎮 Fun Zone
             </button>
           </div>
         </div>
@@ -309,11 +318,11 @@ export default function KidsPortal() {
         {activeTab === 'messages' && (
           <div className="christmas-card py-3">
             <h2 className="text-lg font-bold mb-3">💬 Chat with Santa</h2>
-            
+
             {/* Info Box */}
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-2 mb-3">
               <p className="text-xs text-blue-800">
-                ℹ️ <strong>How it works:</strong> Send your message to Santa below. 
+                ℹ️ <strong>How it works:</strong> Send your message to Santa below.
                 Santa reads all messages personally and will reply when he has time!
               </p>
             </div>
@@ -331,11 +340,10 @@ export default function KidsPortal() {
                     className={`flex mb-2 ${message.from === 'child' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-xs rounded-2xl px-3 py-2 text-xs shadow-sm ${
-                        message.from === 'child'
-                          ? 'bg-christmas-red text-white rounded-br-sm'
-                          : 'bg-white text-gray-800 border border-gray-200 rounded-bl-sm'
-                      }`}
+                      className={`max-w-xs rounded-2xl px-3 py-2 text-xs shadow-sm ${message.from === 'child'
+                        ? 'bg-christmas-red text-white rounded-br-sm'
+                        : 'bg-white text-gray-800 border border-gray-200 rounded-bl-sm'
+                        }`}
                     >
                       <div className="flex items-center justify-between mb-1 gap-2">
                         <span className="font-semibold truncate">
@@ -346,9 +354,8 @@ export default function KidsPortal() {
                         </span>
                         {message.timestamp && (
                           <span
-                            className={`text-[10px] ${
-                              message.from === 'child' ? 'text-white/70' : 'text-gray-400'
-                            }`}
+                            className={`text-[10px] ${message.from === 'child' ? 'text-white/70' : 'text-gray-400'
+                              }`}
                           >
                             {new Date(message.timestamp).toLocaleTimeString('en-US', {
                               hour: '2-digit',
@@ -424,7 +431,7 @@ export default function KidsPortal() {
         {activeTab === 'wishlist' && (
           <div className="christmas-card py-3">
             <h2 className="text-lg font-bold mb-3">🎁 My Christmas Wishlist</h2>
-            
+
             <div className="space-y-2 mb-4">
               {wishlist.slice(0, 5).map((item, index) => (
                 <div key={index} className="flex items-center space-x-2">
@@ -460,9 +467,29 @@ export default function KidsPortal() {
 
             <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded-lg">
               <p className="text-xs text-yellow-800">
-                💡 <strong>Tip:</strong> Be specific about what you want! 
+                💡 <strong>Tip:</strong> Be specific about what you want!
                 The more details you give Santa, the better he can help his elves make it perfect.
               </p>
+            </div>
+          </div>
+        )}
+
+        {/* Fun Zone Tab */}
+        {activeTab === 'funzone' && (
+          <div className="space-y-6">
+            <div className="christmas-card py-4">
+              <h2 className="text-2xl font-bold mb-4 text-center text-christmas text-christmas-red">
+                🎮 North Pole Fun Zone 🎮
+              </h2>
+              <p className="text-center text-gray-600 mb-6 text-sm">
+                Try out these magical activities while you wait for Christmas!
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              <NaughtyNiceScanner />
+              <ElfNameGenerator />
+              <LetterToSanta />
             </div>
           </div>
         )}
