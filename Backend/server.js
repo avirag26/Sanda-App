@@ -11,15 +11,42 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: process.env.FRONTEND_URL,
-    methods: ["GET", "POST"]
+    origin: ['http://localhost:3000', 'https://sanda-app.vercel.app'],
+    methods: ["GET", "POST"],
+    credentials: true
   }
 });
 
 // Middleware
 app.use(helmet());
+
+// CORS Configuration - Allow multiple origins
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://sanda-app.vercel.app',
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+
+    // Remove trailing slash from origin
+    const normalizedOrigin = origin.replace(/\/$/, '');
+
+    // Check if origin is allowed
+    const isAllowed = allowedOrigins.some(allowed => {
+      const normalizedAllowed = allowed.replace(/\/$/, '');
+      return normalizedAllowed === normalizedOrigin;
+    });
+
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 
@@ -44,15 +71,15 @@ app.use('/api/dashboard', require('./routes/dashboardRoutes'));
 // Socket.io for real-time messaging
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
-  
+
   socket.on('join_room', (room) => {
     socket.join(room);
   });
-  
+
   socket.on('send_message', (data) => {
     io.to(data.room).emit('receive_message', data);
   });
-  
+
   socket.on('disconnect', () => {
     console.log('User disconnected:', socket.id);
   });
