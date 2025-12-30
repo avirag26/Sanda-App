@@ -12,6 +12,7 @@ import {
   ClockIcon
 } from '@heroicons/react/24/outline'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
+import WorkshopPulse from '../../components/WorkshopPulse'
 
 export default function Dashboard() {
   const [stats, setStats] = useState<any>(null)
@@ -141,6 +142,9 @@ export default function Dashboard() {
           </div>
         </motion.div>
 
+        {/* Live Workshop Magic Pulse */}
+        <WorkshopPulse />
+
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {statCards.map((stat, index) => (
@@ -264,11 +268,10 @@ export default function Dashboard() {
               { action: 'New child registered: Sofia from Spain', time: '2 hours ago', type: 'child' }
             ].map((activity, index) => (
               <div key={index} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                <div className={`w-2 h-2 rounded-full ${
-                  activity.type === 'message' ? 'bg-blue-500' :
-                  activity.type === 'gift' ? 'bg-green-500' :
-                  activity.type === 'behavior' ? 'bg-yellow-500' : 'bg-purple-500'
-                }`} />
+                <div className={`w-2 h-2 rounded-full ${activity.type === 'message' ? 'bg-blue-500' :
+                    activity.type === 'gift' ? 'bg-green-500' :
+                      activity.type === 'behavior' ? 'bg-yellow-500' : 'bg-purple-500'
+                  }`} />
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-900">{activity.action}</p>
                   <p className="text-xs text-gray-500">{activity.time}</p>

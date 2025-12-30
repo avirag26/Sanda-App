@@ -27,7 +27,7 @@ module.exports = {
       keyframes: {
         snowfall: {
           '0%': { transform: 'translateY(-100vh)' },
-          '100%': { transform: 'translateY(100vh)' }
+          '100%': { transform: 'translateY(150vh)' }
         },
         twinkle: {
           '0%': { opacity: '0.3' },

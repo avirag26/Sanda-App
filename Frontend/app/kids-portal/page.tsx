@@ -11,13 +11,14 @@ import {
   PlusIcon
 } from '@heroicons/react/24/outline'
 
-import toast from 'react-hot-toast'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 import NaughtyNiceScanner from '../../components/NaughtyNiceScanner'
 import ElfNameGenerator from '../../components/ElfNameGenerator'
 import LetterToSanta from '../../components/LetterToSanta'
 import GiftFindingGame from '../../components/GiftFindingGame'
+import ReindeerStable from '../../components/ReindeerStable'
 
 export default function KidsPortal() {
   const router = useRouter()
@@ -280,11 +281,11 @@ export default function KidsPortal() {
       {/* Simple Header */}
       <div className="bg-white/10 backdrop-blur-sm p-3">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
-          <Link href="/" className="text-white font-bold text-sm">
+          <Link href="/" className="text-slate-700 hover:text-christmas-red font-bold text-sm transition-colors">
             ← Back to Home
           </Link>
           <div className="flex items-center space-x-2">
-            <span className="text-white font-bold text-sm">{(childData || fallbackChild).name}</span>
+            <span className="text-slate-700 font-bold text-sm">{(childData || fallbackChild).name}</span>
             <span className="text-lg">{(childData || fallbackChild).avatar}</span>
           </div>
         </div>
@@ -529,6 +530,7 @@ export default function KidsPortal() {
             </div>
 
             <GiftFindingGame />
+            <ReindeerStable />
           </div>
         )}
       </div>
