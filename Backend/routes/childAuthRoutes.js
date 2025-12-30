@@ -16,26 +16,25 @@ const validateChildRegistration = [
 
 // Validation middleware for child login
 const validateChildLogin = [
-  body('email').isEmail().withMessage('Valid email is required'),
-  body('password').isLength({ min: 1 }).withMessage('Password is required')
+  body('email').isEmail().withMessage('Valid email is required')
 ];
 
 // Child authentication middleware
 const authenticateChild = (req, res, next) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
-  
+
   if (!token) {
     return res.status(401).json({ message: 'Access denied. No token provided.' });
   }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
+
     // Check if this is a child token
     if (decoded.type !== 'child') {
       return res.status(403).json({ message: 'Access denied. Child authentication required.' });
     }
-    
+
     req.user = decoded;
     next();
   } catch (error) {

@@ -69,11 +69,6 @@ exports.registerChild = async (req, res) => {
         name: child.name,
         email: child.email,
         behaviorScore: child.behaviorScore
-      },
-      loginInfo: {
-        email: child.email,
-        password: defaultPassword,
-        note: 'Save these credentials to send letters to Santa!'
       }
     });
   } catch (error) {
@@ -90,33 +85,17 @@ exports.loginChild = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password } = req.body;
+    const { email } = req.body;
 
     // Find child auth record
     const childAuth = await ChildAuth.findOne({ email }).populate('childId');
     if (!childAuth) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Invalid email. Please register first! 🎅' });
     }
 
-    // Check if account is locked
-    if (childAuth.isLocked) {
-      return res.status(423).json({ message: 'Account temporarily locked. Please try again later.' });
-    }
-
-    // Check password
-    const isMatch = await bcrypt.compare(password, childAuth.password);
-    if (!isMatch) {
-      // Increment login attempts
-      childAuth.loginAttempts += 1;
-
-      // Lock account after 5 failed attempts
-      if (childAuth.loginAttempts >= 5) {
-        childAuth.lockUntil = Date.now() + 30 * 60 * 1000; // 30 minutes
-      }
-
-      await childAuth.save();
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
+    // Reset login attempts and lock status
+    childAuth.loginAttempts = 0;
+    childAuth.lockUntil = undefined;
 
     // Reset login attempts on successful login
     childAuth.loginAttempts = 0;

@@ -58,24 +58,20 @@ export default function ChildRegister() {
           }
         }
 
-        const loginInfo = data.loginInfo || {};
         toast.success(
           (t) => (
             <div className="text-center">
               <p className="font-bold mb-2">🎉 Welcome to the Nice List!</p>
-              <p className="text-xs mb-2">Your magical password is:</p>
-              <p className="bg-white text-christmas-red font-black px-3 py-1 rounded-md text-lg mb-2 select-all">
-                {loginInfo.password || 'check your email'}
-              </p>
-              <p className="text-[10px] opacity-70">Write it down to login later!</p>
+              <p className="text-xs">You're all set! We're taking you to the Kids Portal now. ✨</p>
+              <p className="text-[10px] opacity-70 mt-2">Just use your email to log back in anytime!</p>
             </div>
           ),
-          { duration: 6000 }
+          { duration: 4000 }
         )
 
         setTimeout(() => {
           router.push('/kids-portal')
-        }, 3000)
+        }, 2000)
       } else {
         toast.error(data.message || 'Registration failed')
       }

@@ -1,9 +1,8 @@
 {
-  "/page": "app/page.js",
   "/login/page": "app/login/page.js",
+  "/page": "app/page.js",
   "/kids-portal/page": "app/kids-portal/page.js",
-  "/messages/page": "app/messages/page.js",
-  "/child-register/page": "app/child-register/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/children/page": "app/children/page.js"
+  "/children/page": "app/children/page.js",
+  "/kids-login/page": "app/kids-login/page.js",
+  "/messages/page": "app/messages/page.js"
 }

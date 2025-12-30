@@ -8,11 +8,7 @@ import toast from 'react-hot-toast'
 import Link from 'next/link'
 
 export default function KidsLogin() {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: ''
-    })
-    const [showPassword, setShowPassword] = useState(false)
+    const [email, setEmail] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
 
@@ -26,7 +22,7 @@ export default function KidsLogin() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({ email }),
             })
 
             const data = await response.json()
@@ -37,7 +33,7 @@ export default function KidsLogin() {
                 toast.success(`Welcome back, ${data.child.name}! 🎄`)
                 router.push('/kids-portal')
             } else {
-                toast.error(data.message || 'Login failed. Check your email and password!')
+                toast.error(data.message || 'Login failed. Are you registered yet?')
             }
         } catch (error) {
             toast.error('Connection error. Please try again.')
@@ -64,10 +60,10 @@ export default function KidsLogin() {
                         🧝
                     </motion.div>
                     <h1 className="text-3xl font-bold text-christmas-red text-christmas">
-                        Kids Portal Login
+                        Magic Entry
                     </h1>
                     <p className="text-gray-600 mt-2">
-                        Enter your magical credentials to see your status!
+                        Enter your registered email to join the fun!
                     </p>
                 </div>
 
@@ -79,43 +75,16 @@ export default function KidsLogin() {
                         <input
                             type="email"
                             required
-                            value={formData.email}
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-christmas-red focus:border-transparent"
                             placeholder="e.g. emma@example.com"
                         />
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Magical Password
-                        </label>
-                        <div className="relative">
-                            <input
-                                type={showPassword ? 'text' : 'password'}
-                                required
-                                value={formData.password}
-                                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-christmas-red focus:border-transparent pr-12"
-                                placeholder="Enter your password"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                            >
-                                {showPassword ? (
-                                    <EyeSlashIcon className="h-5 w-5" />
-                                ) : (
-                                    <EyeIcon className="h-5 w-5" />
-                                )}
-                            </button>
-                        </div>
-                    </div>
-
                     <motion.button
                         type="submit"
-                        disabled={isLoading}
+                        disabled={isLoading || !email.trim()}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         className="w-full btn-christmas flex items-center justify-center space-x-2"
